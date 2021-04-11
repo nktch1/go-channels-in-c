@@ -23,16 +23,16 @@ struct chan {
     pthread_mutex_t lock;
 };
 
-///// Initializes the channel
+/// Initializes the channel
 chan make(size_t type_size, size_t size);
 
-///// Sends to the channel
+/// Sends to the channel
 void send(chan ch, void* value);
 
-///// Receives from the channel
+/// Receives from the channel
 void* receive(chan ch);
 
-///// Closes the channel
+/// Closes the channel
 void close(chan ch);
 
 #endif
