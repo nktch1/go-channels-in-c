@@ -1,16 +1,31 @@
 #include "../../include/channel/channel.h"
 
-/// Initializes the channel
-channel_t* make(uint8_t* buffer, size_t size) {
+chan make(size_t type_size, size_t size) {
+    struct chan* ch = malloc(sizeof(struct chan));
+
+    pthread_mutex_init(&ch->lock, NULL);
+
+    ch->buf = circular_buf_init(
+            malloc(size * type_size), size);
+
+    ch->elemsize = type_size;
+    ch->qcount = 0;
+    ch->closed = 0;
+    ch->dataqsiz = 0;
+    ch->recvx = 0;
+    ch->sendx = 0;
+
+    return ch;
+}
+
+void send(chan ch, void* value) {
 
 }
 
-/// Writes to the channel
-void write(channel_t ch, int value) {
+void* receive(chan ch) {
 
 }
 
-/// Reads from the channel
-int read(channel_t ch) {
+void close(chan ch) {
 
 }

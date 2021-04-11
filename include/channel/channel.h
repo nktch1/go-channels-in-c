@@ -2,17 +2,12 @@
 #define CHANNEL_H
 
 #include <pthread.h>
-
 #include "../buffer/ring_buffer.h"
 
-// Opaque circular buffer structure
 typedef struct channel_t channel_t;
+typedef channel_t* chan;
 
-// Handle type, the way users interact with the API
-typedef channel_t * chan;
-
-// The hidden definition of our circular buffer structure
-struct channel_t {
+struct chan {
     cbuf_handle_t buf;     // points to an array of dataqsiz elements
 
     u_int32_t qcount;      // total data in the queue
@@ -28,13 +23,16 @@ struct channel_t {
     pthread_mutex_t lock;
 };
 
-/// Initializes the channel
-channel_t * make(uint8_t* buffer, size_t size);
+///// Initializes the channel
+chan make(size_t type_size, size_t size);
 
-/// Writes to the channel
-void write(channel_t ch, int value);
+///// Sends to the channel
+void send(chan ch, void* value);
 
-/// Reads from the channel
-int read(channel_t ch);
+///// Receives from the channel
+void* receive(chan ch);
+
+///// Closes the channel
+void close(chan ch);
 
 #endif
